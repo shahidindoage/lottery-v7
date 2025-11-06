@@ -1,0 +1,29 @@
+import { prisma } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
+
+export async function POST(req) {
+  const body = await req.json();
+  const { username, password } = body;
+
+  if (!username || !password) {
+    return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
+  }
+
+  // Plain text comparison
+  const admin = await prisma.admin.findUnique({ where: { username } });
+  if (!admin || admin.password !== password) {
+    return NextResponse.json({ error: 'Invalid username or password' }, { status: 401 });
+  }
+
+  const res = NextResponse.json({ success: true });
+
+  // Set cookie for authentication
+  res.cookies.set('admin_auth', admin.username, {
+    path: '/',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 60 * 60 * 2, // 2 hours
+  });
+
+  return res;
+}
