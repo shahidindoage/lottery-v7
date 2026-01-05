@@ -10,15 +10,26 @@ export async function GET() {
       return new Response('No data available', { status: 404 });
     }
 
-    const header = ['Customer ID', 'Name', 'Phone', 'Accepted Terms', 'Winner', 'Created At'];
+    // ✅ Prepare CSV data
+    const header = [
+      'Customer ID',
+      'Name',
+      'Email',
+      'Phone',
+      'Accepted Terms',
+      'Winner',
+      'Created At',
+    ];
     const rows = submissions.map((s) => [
       s.uniqueId,
       s.name,
+      s.email,
       s.phone,
       s.accepted_terms ? 'Yes' : 'No',
       s.winner === 1 ? 'Winner' : 'No',
       new Date(s.createdAt).toLocaleString(),
     ]);
+    
     const csv = [header, ...rows].map((r) => r.join(',')).join('\n');
 
     return new Response(csv, {
