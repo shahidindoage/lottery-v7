@@ -196,7 +196,7 @@ export default function FlipPage() {
             <div className="back" style={{fontWeight:"100"}}>
               {card?.winner ? <>
                   <span style={{fontFamily:"playfair-display-v2"}}> Winner</span> <br />
-                    <span style={{color:'green',fontFamily:"playfair-display-v2",fontWeight:"100",marginTop:"-10%"}}>
+                    <span style={{color:'green',fontFamily:"playfair-display-v2",fontWeight:"100",marginTop:"-10%",fontSize: "35px"}}>
                       ID - {card.winner.uniqueId}
                     </span>
                   </> : ''}
